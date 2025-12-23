@@ -1,0 +1,307 @@
+# requirements.txt
+# Optional dependencies for benchmarking and development
+# MicroPython doesn't need these - they're for CPython testing only
+
+# Cryptography libraries for comparison (optional)
+pycryptodome>=3.18.0  # AES-CMAC comparison
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Code quality
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.2.0
+
+---
+
+# requirements-dev.txt
+# Development dependencies
+-r requirements.txt
+
+# Additional dev tools
+ipython>=8.0.0
+jupyter>=1.0.0
+pre-commit>=3.0.0
+
+---
+
+# .gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# MicroPython
+*.mpy
+webrepl_cfg.py
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (NEVER commit keys!)
+*.key
+*.pem
+secrets.json
+config_local.py
+
+---
+
+# LICENSE
+MIT License
+
+Copyright (c) 2025 Olena Krainiuk, Yuriy Buts, Mykhailo Piksasov, 
+Natalia Didenko, Boris Pokhodenko
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+# CONTRIBUTING.md
+# Contributing to Smart PPE Integrity
+
+Thank you for your interest in improving industrial safety systems!
+
+## How to Contribute
+
+### Reporting Bugs
+- Use GitHub Issues
+- Include: hardware platform, Python version, error messages
+- Provide minimal reproducible example
+
+### Suggesting Features
+- Open an issue first to discuss
+- Consider: battery impact, security implications, hardware constraints
+
+### Code Contributions
+
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Follow code style:
+   ```bash
+   black siphash_iot.py
+   flake8 siphash_iot.py
+   ```
+4. Add tests for new functionality
+5. Ensure all tests pass: `pytest tests/`
+6. Update documentation
+7. Submit pull request
+
+### Code Review Checklist
+- [ ] Tests pass on both CPython and MicroPython
+- [ ] No hardcoded secrets
+- [ ] Energy consumption measured (for ESP32)
+- [ ] Docstrings updated
+- [ ] CHANGELOG.md updated
+
+## Security Vulnerabilities
+
+**DO NOT** open public issues for security vulnerabilities.
+
+Email: cyber@khadi.kharkov.ua with:
+- Vulnerability description
+- Steps to reproduce
+- Potential impact
+- Suggested fix (if any)
+
+We will respond within 48 hours.
+
+## Code of Conduct
+
+Be professional, respectful, and constructive.
+
+---
+
+# CHANGELOG.md
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [1.0.0] - 2025-01-XX
+
+### Added
+- Initial release
+- SipHash-2-4 core implementation
+- Packet signing/verification functions
+- Official test vectors
+- Comprehensive benchmarks
+- Smart helmet usage example
+- Documentation
+
+### Security
+- Constant-time comparison (best effort)
+- Input validation
+- Key length enforcement
+
+## [Unreleased]
+
+### Planned
+- Key derivation (HKDF-SHA256)
+- Timestamp-based replay protection
+- MQTT/CoAP integration
+- Hardware acceleration (ESP32-S3 AES)
+- Formal verification
+
+---
+
+# hardware/esp32_config.md
+# ESP32 Configuration Guide
+
+## Flashing MicroPython
+
+1. Download firmware:
+   ```bash
+   wget https://micropython.org/resources/firmware/esp32-20230426-v1.20.0.bin
+   ```
+
+2. Erase flash:
+   ```bash
+   esptool.py --port /dev/ttyUSB0 erase_flash
+   ```
+
+3. Flash firmware:
+   ```bash
+   esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash -z 0x1000 esp32-*.bin
+   ```
+
+## Upload Code
+
+Using `ampy`:
+```bash
+pip install adafruit-ampy
+ampy --port /dev/ttyUSB0 put siphash_iot.py
+ampy --port /dev/ttyUSB0 put example_usage.py
+```
+
+Using `mpremote`:
+```bash
+pip install mpremote
+mpremote connect /dev/ttyUSB0 cp siphash_iot.py :
+```
+
+## Test Installation
+
+```python
+>>> import siphash_iot
+>>> siphash_iot.siphash_24(b'0123456789ABCDEF', b'test')
+5203235933232121
+```
+
+## Pinout for Sensors
+
+| Sensor    | ESP32 Pin | Notes                    |
+|-----------|-----------|--------------------------|
+| MQ-2 (Gas)| GPIO36 (ADC1_0) | 3.3V logic level  |
+| DHT22     | GPIO4     | 10kΩ pull-up             |
+| Button    | GPIO0     | Internal pull-up         |
+| LED       | GPIO2     | Built-in LED             |
+| LoRa SX1276| SPI (VSPI) | CS: GPIO5            |
+
+## Power Optimization
+
+Enable deep sleep:
+```python
+import machine
+
+# Sleep for 10 seconds
+machine.deepsleep(10000)
+```
+
+Reduce CPU frequency:
+```python
+import machine
+machine.freq(80000000)  # 80 MHz instead of 240 MHz
+```
+
+---
+
+# .github/workflows/tests.yml
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, "3.10", "3.11"]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v --cov=siphash_iot --cov-report=xml
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
