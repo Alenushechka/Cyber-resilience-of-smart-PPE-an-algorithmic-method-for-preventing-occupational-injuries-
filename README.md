@@ -8,7 +8,7 @@ The proposed algorithm mitigates the risks of concealing real hazards and genera
 
 **Lightweight cryptographic data integrity for Industrial IoT safety systems**
 
-> 📄 **Research Paper**: [Cyber resilience of smart PPE: an algorithmic method for preventing occupational injuries](https://github.com/yourusername/smart-ppe-integrity)  
+> 📄 **Research Paper**: [Cyber resilience of smart PPE: an algorithmic method for preventing occupational injuries](https://github.com/Alenushechka/Cyber-resilience-of-smart-PPE-an-algorithmic-method-for-preventing-occupational-injuries-))  
 > 👥 **Authors**: Olena Krainiuk, Yuriy Buts, Mykhailo Piksasov, Natalia Didenko, Boris Pokhodenko  
 > 🏛️ **Affiliation**: Kharkiv National Automobile and Highway University, Ukraine
 
@@ -54,7 +54,7 @@ ampy --port /dev/ttyUSB0 put siphash_iot.py
 
 ### For CPython (Development/Testing)
 ```bash
-git clone https://github.com/yourusername/smart-ppe-integrity.git
+git clone (https://github.com/Alenushechka/Cyber-resilience-of-smart-PPE-an-algorithmic-method-for-preventing-occupational-injuries-)
 cd smart-ppe-integrity
 pip install -r requirements.txt  # Optional: for benchmarking
 ```
@@ -303,7 +303,7 @@ Contributions welcome! Areas of interest:
 
 ### Development Setup
 ```bash
-git clone https://github.com/yourusername/smart-ppe-integrity.git
+git clone https://github.com/Alenushechka/Cyber-resilience-of-smart-PPE-an-algorithmic-method-for-preventing-occupational-injuries-
 cd smart-ppe-integrity
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
@@ -324,7 +324,7 @@ MIT License - See [LICENSE](LICENSE) file for details.
 
 ## 🆘 Support & Contact
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/smart-ppe-integrity/issues)
+- **Issues**: [GitHub Issues]https://github.com/Alenushechka/Cyber-resilience-of-smart-PPE-an-algorithmic-method-for-preventing-occupational-injuries-
 - **Email**: cyber@khadi.kharkov.ua
 - **Research Group**: [Cybersecurity Department, KhADI](https://cyber.khadi.kharkov.ua)
 
