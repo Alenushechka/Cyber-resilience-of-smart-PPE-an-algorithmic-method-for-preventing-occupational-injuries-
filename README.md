@@ -280,11 +280,11 @@ If you use this code in academic research, please cite:
 @article{krainiuk2025siphash,
   title={Cyber resilience of smart PPE: an algorithmic method for preventing occupational injuries},
   author={Krainiuk, Olena and Buts, Yuriy and Piksasov, Mykhailo and Didenko, Natalia and Pokhodenko, Boris},
-  journal={[Journal Name]},
+  journal={Social Development and Security},
   year={2025},
   doi={10.xxxx/xxxxx}
 }
-```
+```https://paperssds.eu/index.php/JSPSDS/issue/archive 
 
 ### Related Work
 - [SipHash: a fast short-input PRF](https://www.iacr.org/archive/fse2012/75490301/75490301.pdf) (Aumasson & Bernstein, 2012)
